@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Letter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+
+    <div class="envelope-container">
+        <div class="envelope">
+            <img src="assets/pink_roses.png" class="rose-asset" alt="Rose">
+            <img src="assets/ticket.png" class="ticket-asset" alt="Movie Ticket">
+            <img src="assets/her.png" class="her-asset" alt="Her">
+            <div class="inner"></div>
+            
+            <div class="letter">
+                <h1>Happy Valentine’s Day, Baby 💓</h1> 
+                <p> I'm so glad I met you during that time. Thank you for giving me the chance to know you. I wanted to let you know that you inspire me to do a lot of things!</p>
+                <p>You’re my heart, my smile, and my everything. Can’t wait to hold you close and make more memories together. 💕</p>
+            </div>
+
+            <div class="flap"></div>
+            <div class="front"></div> 
+            <div class="heart">❤</div>
+        </div>
+    </div>
+
+   <div class="volume-container">
+    <button id="mute-btn" class="volume-icon">🔊</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
+</div>
+
+    <div id="rose-overlay" class="overlay-hidden">
+        <div class="pink-bg"></div>
+        <img src="assets/pink_roses.png" class="zoomed-bouquet" alt="Bouquet">
+        <h2 class="bouquet-text">A bouquet for my favorite person! 🌹</h2>
+        <p class="sorry-ps">P.s. Sorry I can't afford some yet!</p>
+    </div>
+
+   <div id="ticket-overlay" class="overlay-hidden">
+    <div class="ticket-bg"></div> 
+    <div class="ticket-content">
+        <img src="assets/ticket.png" class="zoomed-ticket" alt="Movie Ticket">
+        <h2 class="ticket-text">02-14-2026<br>Valentine Movie Date! 🎬</h2>
+    <div class="ticket-buttons">
+        <button id="yes-btn">YES</button>
+        <button id="no-btn">NO</button>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

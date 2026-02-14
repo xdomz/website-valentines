@@ -1,0 +1,458 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Delius&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Delius&family=Julius+Sans+One&display=swap');
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url('assets/paper_texture.jpg');
+    background-position: center;
+    background-size: cover;
+    background-color: #e0e0e0;
+    transition: background-color 0.5s ease;
+}
+
+body.envelope-is-open {
+    background-color: #000000; 
+    background-blend-mode: multiply;
+}
+
+.envelope-container {
+    position: relative;
+    width: 300px;
+    height: 200px;
+}
+
+.envelope {
+    width: 300px;
+    height: 200px;
+    background-color: #f4f4f4;
+    border: 2px solid #333;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    z-index: 5; /* Main container level */
+    transition: all 0.5s ease; 
+    pointer-events: auto;
+}
+
+/* --- Assets (Rose & Ticket) --- */
+.rose-asset, .ticket-asset, .her-asset {
+    position: absolute;
+    bottom: 20px;
+    left: 10%;
+    width: 250px; 
+    z-index: 1; /* Behind the envelope layers */
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+
+/* --- The Inner Envelope Back Wall --- */
+.inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #b02626; 
+    z-index: 2; /* Deepest layer inside the pocket */
+    border: 2px solid #333;
+    box-sizing: border-box;
+    transition: background-color 0.5s ease;
+}
+
+/* --- The Letter --- */
+.letter {
+    position: absolute;
+    bottom: 5px;
+    left: 5%;
+    width: 90%;
+    height: 450px; 
+    padding: 30px;
+    box-sizing: border-box;
+    z-index: 4; /* Hidden behind flap/front initially */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),z-index 0s 0.4s;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none; /* No clicks until envelope is open */
+    
+    background-image: 
+        linear-gradient(to right, transparent 95%, 
+      rgba(0,0,0,0.05) 100%), 
+        url('assets/paper_texture.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.letter h1 {
+    margin: 0 0 25px 0;
+    color: #444;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.letter p {
+    margin: 0;
+    color: #444;
+    font-family: 'Delius', cursive;
+    font-size: .7rem;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* --- Envelope Parts --- */
+.flap {
+    position: absolute;
+    top: 0; left: 0; width: 0; height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 100px solid #dcdcdc; 
+    z-index: 10; /* Top layer when closed */
+    transform-origin: top;
+    transition: transform 0.5s ease;
+    pointer-events: none; /* Lets you click the heart/envelope */
+}
+
+.front {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 100%;
+    background-color: #f4f4f4;
+    border: 2px solid #333;
+    box-sizing: border-box;
+    z-index: 8; /* Higher than the tucked letter to create a pocket */
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 50%, 100% 0%);
+    pointer-events: none; /* CRITICAL: Allows click to reach the Stage 1 letter */
+    transition: background-color 0.5s ease, border 0.5s ease;
+}
+
+.heart {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 11; color: #ff4d4d; font-size: 24px;
+    transition: opacity 0.3s;
+}
+
+/* --- Stage 1: Opened View (Tucked Paper) --- */
+.envelope.open {
+    border-color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.envelope.open .inner {
+    background-color: #8b0000; 
+}
+
+.envelope.open .letter {
+    opacity: 1;
+    /* translate up 100px, but scaleY(0.4) keeps it short */
+    transform: translate(0, -100px) scaleY(0.4) scaleX(0.95); 
+    transform-origin: bottom;
+    z-index: 7; /* Inside the pocket (below front at z-8) */
+    pointer-events: auto; /* Clickable to Zoom */
+    cursor: zoom-in;
+}
+
+.envelope.open .rose-asset {
+    opacity: 1;
+    transform: translate(-250px, -50px) scale(1.5) rotate(-20deg);
+}
+
+.envelope.open .ticket-asset {
+    opacity: 1;
+    transform: translate(200px, -140px) scale(2.0) rotate(-30deg);
+}
+.envelope.open .her-asset {
+    opacity: 1;
+    transform: translate(10px, -130px) scale(1.5) rotate(-90deg);
+    z-index: -1;
+}
+.envelope.open .front {
+    background-color: #e90202;
+    border: 2px solid #8b0000;
+}
+
+.envelope.open .flap {
+    transform: rotateX(180deg);
+    border-top-color: #b02626;
+    z-index: 3; /* Behind the letter and front pocket */
+}
+
+.envelope.open .heart {
+    opacity: 0;
+}
+
+/* --- Stage 2: Zoomed View --- */
+.letter.zoomed {
+    transform: translate(0px, 350px) scale(2) rotate(0deg) !important;
+    /* When zooming IN, we want z-index 100 to apply with NO delay */
+    transition: opacity 0.8s, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0s 0s;
+    z-index: 100 !important;
+    pointer-events: auto;
+}
+
+.letter.zoomed h1, .letter.zoomed p {
+    opacity: 1;
+}
+
+/* Blurs background when reading */
+.envelope.open:has(.letter.zoomed) .front,
+.envelope.open:has(.letter.zoomed) .flap,
+.envelope.open:has(.letter.zoomed) .inner,
+.envelope.open:has(.letter.zoomed) .rose-asset,
+.envelope.open:has(.letter.zoomed) .ticket-asset
+.envelope.open:has(letter.zoomed) .her-asset {
+    filter: blur(8px) brightness(0.4);
+}
+.volume-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 200;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px 15px;
+    border-radius: 30px;
+    backdrop-filter: blur(8px);
+    transition: opacity 0.5s ease;
+    opacity: 0; 
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.envelope-is-open .volume-container {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#mute-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#volume-slider {
+    width: 100px;
+    cursor: pointer;
+    accent-color: #ff4d4d;
+}
+#rose-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 500; /* Above everything else */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#rose-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* The Pink GIF Background */
+.pink-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/pinkbg.gif');
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+/* The Zoomed Bouquet Image */
+.zoomed-bouquet {
+    max-width: 80%;
+    max-height: 70vh;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+    transform: scale(0.5); /* Start small */
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#rose-overlay.active .zoomed-bouquet {
+    transform: scale(1);
+}
+#rose-overlay.active .bouquet-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+.overlay-instruction {
+    color: white;
+    font-family: 'Delius', cursive;
+    margin-top: 20px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+/* Make the small rose clickable in Stage 1 */
+.rose-asset {
+    pointer-events: auto !important; /* Allow clicking the small rose */
+    cursor: pointer;
+}
+.bouquet-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.bouquet-text {
+    font-family: 'Dancing Script', cursive; /* Using the font you already imported */
+    color: white;
+    font-size: 5.5rem;
+    margin-top: -250px; /* Pulls text slightly over the bouquet for a nice look */
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease 2s; /* 0.3s delay so it appears after the bouquet zooms */
+    z-index: 10;
+}
+.sorry-ps {
+    transition: all 0.8;
+    z-index: 10;
+}
+
+/* Ticket Overlay Base */
+#ticket-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+    visibility: hidden;
+    opacity: 0;
+}
+
+#ticket-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Your Ticket Background - Add your gif/image here */
+.ticket-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: #1a1a1a; /* Placeholder color */
+    background-image: url('assets/moviebg.jpg'); 
+    background-size: cover;
+    z-index: -1;
+}
+
+.zoomed-ticket {
+    width: 80%;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+}
+#ticket-overlay.active .zoomed-ticket {
+    transform: scale(1) rotate(90deg) translate(400px, -180px);
+    opacity: 1;
+}
+
+
+
+.ticket-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Perfectly centers it */
+    width: 90%;
+    text-align: center;
+font-family: 'Julius Sans One', sans-serif; 
+    color: #000000;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase; /* Cinema tickets usually use all caps */
+    letter-spacing: 4px;       /* Adds a clean, wide cinematic look */
+    line-height: 1.4;
+    opacity: 0;
+    pointer-events: none;
+    /* Subtle shadow to make it look 'imprinted' */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+#ticket-overlay.active .ticket-text {
+    opacity: 1;
+    animation: cinematicEntrance 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: 0.8s; /* Waits for ticket to zoom in first */
+}
+
+/* Make the small ticket clickable in Stage 1 */
+.ticket-asset {
+    pointer-events: auto !important;
+    cursor: pointer;
+}
+
+.ticket-buttons {
+    position: absolute;
+    top: 65%; /* Adjust this based on where the empty space is on your ticket */
+    left: 50%;
+    display: flex;
+    gap: 180px;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.5s ease 1s;
+
+
+}
+.ticket-buttons button {
+    padding: 20px 55px;
+    font-family: 'Julius Sans One', sans-serif;
+    font-weight: bold;
+    border: 2px solid #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+#yes-btn {
+    background: #000;
+    color: #ffd700; /* Gold text */
+}
+#yes-btn:hover {
+    background: #ffd700;
+    color: #000;
+    transform: scale(1.1);
+}
+
+#no-btn {
+    background: transparent;
+    color: #000;
+}
